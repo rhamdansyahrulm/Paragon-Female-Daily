@@ -104,11 +104,11 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
         except NoSuchElementException:
             print("This is the last page !")
             next_page_available = False
-            driver.close()
         
         if len(fix_df) < 10 :
             continue_scrap = False
-            driver.close()
-        else : True
+    
+    else :
+        driver.close()
     
     return review_df, fix_df, page_review, item_info

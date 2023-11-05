@@ -3,7 +3,7 @@ from google.oauth2 import service_account
 from scraping_review import get_reviews
 
 # Initialize BigQuery client
-credentials = service_account.Credentials.from_service_account_file("voltaic-reducer-399714-87eda49329ec.json")
+credentials = service_account.Credentials.from_service_account_file("../../voltaic-reducer-399714-87eda49329ec.json")
 project_id = "voltaic-reducer-399714"
 client = bigquery.Client(credentials=credentials, project=project_id)
 
