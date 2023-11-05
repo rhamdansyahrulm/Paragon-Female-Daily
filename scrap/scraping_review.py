@@ -55,21 +55,21 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
                     score = element.find_all('i', class_="icon-ic_big_star_full margin-right")
                     key_value = len(score)
                 elif key == "recommend":
-                    user_recomend = element.find('b').text if element is not None else ""
-                    key_value = 0 if "doesn't recommend" in user_recomend else None if user_recomend == "" else 1
+                    user_recommend = element.find('b').text if element is not None else ""
+                    key_value = 0 if "doesn't recommend" in user_recommend else 1
                 elif key == "purchase_point":
                     b_tags = element.find_all('b')
                     key_value = b_tags[1].text if len(b_tags) > 1 else ""
                 elif key == "date":
                     date_value = element.text if element is not None else ""
                     if "hours ago" in date_value:
-                        key_value = (datetime.now() - timedelta(days=3)).strftime('%d %b %Y')
+                        key_value = datetime.now()
                     elif "days ago" in date_value:
                         days_ago = int(date_value.split()[0])
-                        key_value = (datetime.now() - timedelta(days=days_ago)).strftime('%d %b %Y')
-                    else :
-                        key_value = datetime.strptime(date_value, '%d %b %Y').strftime('%d %b %Y')
-                else :
+                        key_value = datetime.now() - timedelta(days=days_ago)
+                    else:
+                        key_value = datetime.strptime(date_value, '%d %b %Y')
+                else:
                     key_value = element.text if element is not None else ""
                     
                 item_info.append(key_value)
@@ -80,20 +80,21 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
         review_df = pd.DataFrame(page_review, columns=column_names)
         
         if interval == "today":
-            fix_df = review_df[review_df["date"] == datetime.now().strftime('%d %b %Y')]
+            fix_df = review_df[review_df["date"] == datetime.now()]
         elif interval == "1 Week Ago":
-            date_range = (datetime.now() - timedelta(days=6)).strftime('%d %b %Y')
+            date_range = (datetime.now() - timedelta(days=6))
             fix_df = review_df[review_df["date"] >= date_range]
         elif interval == "1 Month Ago":
-            date_range = (datetime.now() - timedelta(days=30)).strftime('%d %b %Y')
+            date_range = (datetime.now() - timedelta(days=30))
             fix_df = review_df[review_df["date"] >= date_range]
         elif interval == "1 Year Ago":
-            date_range = (datetime.now() - timedelta(days=365)).strftime('%d %b %Y')
+            date_range = (datetime.now() - timedelta(days=365))
             fix_df = review_df[review_df["date"] >= date_range]
         elif interval == "All":
             fix_df = review_df
         
-        fix_df.sort_values(by=["date"], ascending=False).to_gbq(table_id_reviews, project_id=project_id, if_exists="replace")
+        fix_df["date"] = fix_df["date"].dt.strftime('%Y-%m-%d')
+        fix_df.to_gbq(table_id_reviews, project_id=project_id, if_exists="append")
                         
         time.sleep(0.5)
     
@@ -105,10 +106,9 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
             print("This is the last page !")
             next_page_available = False
         
-        if len(fix_df) < 10 :
+        if len(fix_df) < 10:
             continue_scrap = False
     
-    else :
-        driver.close()
+    driver.close()
     
     return review_df, fix_df, page_review, item_info
