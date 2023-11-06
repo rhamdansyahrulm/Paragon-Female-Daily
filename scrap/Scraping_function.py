@@ -21,11 +21,12 @@ product_list_df = client.query(query_product).to_dataframe()
 unique_brand = product_list_df[['brand_id', 'brand_name']].drop_duplicates().reset_index(drop=True)
 
 # Function to select items
-def select_items(prompt, column_name, df, selected_brand_list = []):
-    if column_name == "brand_id" :
+def select_items(prompt, column_name, df, selected_brand_list=[]):
+    if column_name == "brand_id":
         print("=" * 75)
         print(("\t" * 6) + "LIST OF PARAGON BRAND NAMES")
         print("=" * 75)
+        print("0. All (Select all brands)")
         for i, row in unique_brand.iterrows():
             print(f"{row['brand_id']}. {row['brand_name']}")
         print("=" * 75)
@@ -35,30 +36,41 @@ def select_items(prompt, column_name, df, selected_brand_list = []):
                 print("=" * 75)
                 print(("\t" * 6) + f"LIST OF PARAGON PRODUCT NAMES ({row_1['brand_name']})")
                 print("=" * 75)
+                print("0. All (Select all products for this brand)")
                 for i, row_2 in product_list_df.iterrows():
                     if row_1["brand_id"] == row_2["brand_id"]:
                         print(f"{row_2['product_id']}. {row_2['product_name']}")
                 print("=" * 75)
-    
+
     selected_items = []
     selected_names = []
-    choose = True
-    while choose:
+
+    while True:
         selected_item = input(prompt)
-        selected_items.append(selected_item)
-        selected_names.extend(product_list_df.loc[product_list_df['product_id'] == int(selected_item), ["brand_name", "product_name", "product_shade", "product_url"]].values.tolist())
-        choose = input("Do you want to add another item? [Y/N]: ").strip().lower() == "y"
-    
+        if selected_item == "0":
+            # Select all items
+            selected_brand_list = [int(item) for item in selected_brand_list]
+            selected_items = [item for item in df[df["brand_id"].isin(selected_brand_list)]['product_id'].tolist()]
+            selected_names = product_list_df[product_list_df["product_id"].isin(selected_items)][["brand_name", "product_name", "product_shade", "product_url"]].values.tolist()
+            break
+        else:
+            selected_items.append(selected_item)
+            selected_names.extend(product_list_df.loc[product_list_df['product_id'] == int(selected_item), ["brand_name", "product_name", "product_shade", "product_url"]].values.tolist())
+        choose = input("Do you want to add another item? [Y/N]: ").strip().lower()
+        if choose != "y":
+            break
+
     print("=" * 75)
     print(("\t" * 6) + f"YOUR SELECTED {column_name.upper()}")
     print("=" * 75)
-    
+
     for i, row in df.iterrows():
         if str(row[column_name]) in selected_items:
             print(f"{row[column_name]}. {row[column_name.replace('id', 'name')]}")
-    
+
     print("=" * 75)
     return selected_items, selected_names
+
 
 def time_interval():
     interval_list = ["today", "1 Week Ago", "1 Month Ago", "1 Year Ago", "All"]

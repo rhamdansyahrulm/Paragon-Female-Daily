@@ -27,6 +27,8 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
         time.sleep(0.2)
         
         soup = BeautifulSoup(driver.page_source, "html.parser")
+        if soup.find('div', class_='jsx-2016320139 jsx-2462230538 no-review-holder'):
+            break
         
         column_format = {
             'age' : ['p', 'profile-age'],
@@ -110,5 +112,3 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
             continue_scrap = False
     
     driver.close()
-    
-    return review_df, fix_df, page_review, item_info
