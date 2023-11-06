@@ -94,8 +94,10 @@ product_id, product_info = select_items("Select the Product you want to search f
 interval = time_interval()
     
 for info in product_info:
+    print(f"\n\nScraping on Progress for : {info[1]}")
+    print("=" * 75)
     get_reviews(info, project_id, table_id_reviews, interval)
-    
+    print("=" * 75)
     
     
     
