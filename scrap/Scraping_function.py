@@ -20,8 +20,12 @@ product_list_df = client.query(query_product).to_dataframe()
 # Retrieve unique brand data
 unique_brand = product_list_df[['brand_id', 'brand_name']].drop_duplicates().reset_index(drop=True)
 
+selected_product_list = [
+    1203, 136, 139, 161, 250, 593, 665, 830, 937, 964, 53, 657, 689, 727, 763, 880, 936, 1097, 51, 90, 333, 378, 445, 487, 931
+                         ]
+
 # Function to select items
-def select_items(prompt, column_name, df, selected_brand_list=[]):
+def select_items(prompt, column_name, df, selected_brand_list=[], selected_product_list=[]):
     if column_name == "brand_id":
         print("=" * 75)
         print(("\t" * 6) + "LIST OF PARAGON BRAND NAMES")
@@ -31,16 +35,21 @@ def select_items(prompt, column_name, df, selected_brand_list=[]):
             print(f"{row['brand_id']}. {row['brand_name']}")
         print("=" * 75)
     elif column_name == "product_id":
-        for i, row_1 in unique_brand.iterrows():
-            if str(row_1['brand_id']) in selected_brand_list:
-                print("=" * 75)
-                print(("\t" * 6) + f"LIST OF PARAGON PRODUCT NAMES ({row_1['brand_name']})")
-                print("=" * 75)
-                print("0. All (Select all products for this brand)")
-                for i, row_2 in product_list_df.iterrows():
-                    if row_1["brand_id"] == row_2["brand_id"]:
-                        print(f"{row_2['product_id']}. {row_2['product_name']}")
-                print("=" * 75)
+        if len(selected_product_list) != 0:
+            selected_items = selected_product_list
+            selected_names = product_list_df[product_list_df["product_id"].isin(selected_items)][["brand_name", "product_name", "product_shade", "product_url"]].values.tolist()
+            return selected_items, selected_names
+        else:
+            for i, row_1 in unique_brand.iterrows():
+                if str(row_1['brand_id']) in selected_brand_list:
+                    print("=" * 75)
+                    print(("\t" * 6) + f"LIST OF PARAGON PRODUCT NAMES ({row_1['brand_name']})")
+                    print("=" * 75)
+                    print("0. All (Select all products for this brand)")
+                    for i, row_2 in product_list_df.iterrows():
+                        if row_1["brand_id"] == row_2["brand_id"]:
+                            print(f"{row_2['product_id']}. {row_2['product_name']}")
+                    print("=" * 75)
 
     selected_items = []
     selected_names = []
@@ -86,13 +95,13 @@ def time_interval():
     
 
 # Select brands
-brand, _ = select_items("Select the brand you want to search for: ", "brand_id", unique_brand)
+# brand, _ = select_items("Select the brand you want to search for: ", "brand_id", unique_brand)
 
 # Select products
-product_id, product_info = select_items("Select the Product you want to search for: ", "product_id", product_list_df, brand)
+product_id, product_info = select_items("Select the Product you want to search for: ", "product_id", product_list_df, selected_product_list=selected_product_list)
 
 interval = time_interval()
-    
+
 for info in product_info:
     print(f"\n\nScraping on Progress for : {info[1]}")
     print("=" * 75)

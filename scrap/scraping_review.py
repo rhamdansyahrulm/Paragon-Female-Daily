@@ -51,8 +51,11 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
                     span_element = element.find('span') if element else None
                     key_value = span_element.text if span_element is not None else ""
                 elif key == "usage_period":
-                    b_tags = element.find_all('b')
-                    key_value = b_tags[0].text if len(b_tags) > 0 else ""
+                    if element is not None :
+                        b_tags = element.find_all('b')
+                        key_value = b_tags[0].text if len(b_tags) > 0 else ""
+                    else :
+                        key_value = ""
                 elif key == "rating":
                     score = element.find_all('i', class_="icon-ic_big_star_full margin-right")
                     key_value = len(score)
@@ -60,11 +63,14 @@ def get_reviews(product_info, project_id, table_id_reviews, interval):
                     user_recommend = element.find('b').text if element is not None else ""
                     key_value = 0 if "doesn't recommend" in user_recommend else 1
                 elif key == "purchase_point":
-                    b_tags = element.find_all('b')
-                    key_value = b_tags[1].text if len(b_tags) > 1 else ""
+                    if element is not None :
+                        b_tags = element.find_all('b')
+                        key_value = b_tags[1].text if len(b_tags) > 1 else ""
+                    else :
+                        key_value = ""
                 elif key == "date":
                     date_value = element.text if element is not None else ""
-                    if "hours ago" in date_value:
+                    if any(item in date_value for item in ["hours ago", "minutes ago"]):
                         key_value = datetime.now()
                     elif "days ago" in date_value:
                         days_ago = int(date_value.split()[0])
