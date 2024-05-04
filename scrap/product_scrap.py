@@ -3,6 +3,7 @@ import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
+import re
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -22,49 +23,66 @@ def open_all_page(driver, soup):
             time.sleep(0.5)
         except NoSuchElementException:
             continue
-    
-    return total_click_next
-    
-def get_data_scrap(column_format, driver, total_click_next):
+        
+def get_data_scrap(column_format, driver):
     soup = BeautifulSoup(driver.page_source, "html.parser")
     
     items = []
-    for item in soup.findAll('div', class_='jsx-1897565266 info-product'):
-        item_info = []
+    all_items_list = soup.findAll('div', class_='jsx-1897565266 info-product')
+    url_element = soup.findAll('a', class_='jsx-3793288165', href=True)
+    img_product_div = soup.findAll('div', class_="jsx-1897565266 image-container")
+    
+    for i_item, item in enumerate(all_items_list):
+        url = url_element[i_item]['href']
+        url_split = url.split("/")
+        category, sub_category, brand = url_split[4:7]
+        
+        img = img_product_div[i_item].find('img')['src']
+        
+        item_info = [brand, category, sub_category]
+        item_info = list(map(lambda raw_x: "".join([x for x in raw_x if x.isdigit() == False]).replace("-", " "), item_info))
         
         for key, value in column_format.items():
             element = item.find(value[0], class_=value[1])
-            key_value = element.text if element is not None else ""
-            item_info.append(key_value)
             
+            if key == "total_review":
+                key_value = element.text if element is not None else ""
+                key_value = "".join(x for x in key_value if x.isdigit())
+            else :
+                key_value = element.text if element is not None else ""
+                
+            item_info.append(key_value)
+        
+        item_info.extend([url, img])
+        item_info.insert(0, f"{item_info[0]}-{i_item}")
         items.append(item_info)
     
     return items
     
-def run_scrapping(brand):
+def run_scraping(brand):
     column_format = {
         'product_name'      : ['p', 'jsx-1897565266 fd-body-md-regular text-ellipsis two-line word-break'],
-        'product_shade'     : ['p', 'jsx-1897565266 fd-body-md-regular text-ellipsis grey'],
-        'product_rating'    : ['span', 'jsx-1897565266 fd-body-sm-regular'],
-        'total_review'      : ['span', 'jsx-1897565266 fd-body-sm-regular grey']
+        'product_shade'     : ['p', 'jsx-1897565266 fd-body-md-regular text-ellipsis grey']
     }
     
     url = f"https://reviews.femaledaily.com/brands/product/"
     url_brand = os.path.join(url, brand)
+    url_order = url_brand + "?order=newest"
     
     driver = webdriver.Chrome()
-    driver.get(url_brand)
+    driver.get(url_order)
     time.sleep(1)
     soup = BeautifulSoup(driver.page_source, "html.parser")
-    total_click_next = open_all_page(driver, soup)
-    all_data_items = get_data_scrap(column_format, driver, total_click_next)
     
-    product = pd.DataFrame(all_data_items, columns=column_format.keys())
-    product.to_csv("product_list.csv", index=False)
+    open_all_page(driver, soup)
+    all_data_items = get_data_scrap(column_format, driver)
     
-    print(product)
+    column_name = ["product_key", "brand", "caetgory", "sub_category"] + list(column_format.keys()) + ["url", "img_url"]
+    product = pd.DataFrame(all_data_items, columns=column_name)
+    
+    return product
 
-run_scrapping("emina")
+product_pd = run_scraping("emina")
 
 
 
