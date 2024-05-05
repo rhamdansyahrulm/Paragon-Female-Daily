@@ -1,0 +1,11 @@
+{
+    "storage_class" : {
+        "brand" : ["Wardah", "Emina", "Make-Over", "kahf"],
+        "category" : {
+            "cleanser" : ["Toner", "Makeup Remover", "Cream & Lotion", "Facial Wash", "Oil", "Scrub & Exfoliator"],
+            "Treatment" : ["Eye Treatment", "Skin Soothing Treatment", "Brow & Lash Treatment", "Peeling", "Serum & Essence", "Acne Treatment"],
+            "Mask" : ["Sleeping Mask", "Nose Pack", "Mask Sheet", "Wash-Off"],
+            "Moisturizer" : ["Lotion & Emulsion", "Face Mist", "Gel", "Sun Protection", "Cream", "Face Oil"]
+        }
+    }
+}

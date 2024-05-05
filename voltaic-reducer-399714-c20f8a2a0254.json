@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "voltaic-reducer-399714",
+  "private_key_id": "c20f8a2a0254bcc57ed8347cd9ba2549ca9e9483",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC9Psh5fp7mqDg8\nuTmLpPQ+dLmxzd1LJmuEeoxw88jsKG+hPSVrUB/DpXrL2dTL2guKUlPPavybV/M0\nZWdvviCVQY05BhiC66mJ2xU4OTsY7aDkw7u/llyTVcJkexyR+ZJc5Zd2vYi4RtXb\nx762I0/3C+ur5bumBU6Og4U9+hjQuuAJwzhrVPJo+oHcPp3Ss4oF/q74zqCT1SOB\nAUWFvhO7TNUoHkwk5o+fS9upipPP8tlStOkxXHp1M1SarIr97smiJUQZlHNmOWYp\nlQTob91Hd069e524p6jODeUs32dreTDteZIucGl1LBoGENF1ZoytynSbGLbZyhKb\naHuKaxSPAgMBAAECggEARBOrO2Vs1Q3LmTCKfm0a/cKwsEEdq7SI9fG9xr4z15xe\nN9MOvHFo09EaAO3+Ck0IXLxr8NAMSfeUAhO+Z2iuQPMBUfOa6rHK3dAFbKHN3BRT\njifJSMzWxZuSn+HXr71nROrEl07sOVomAXdz6AKA+B5+K2qrm7gJ/+NZEaf/uEn6\n3A1GgVgZ6ni7FzBPBdgLJRZodKVY78srqhIpB5wG3X3Q8MxTMBtW4W8HiLPpUIda\nwXFLFAZVmzpUzdbNFkfK8H5TXq3ZQ0GfrjPfy5Dl7L8EAC7zjIfRxWZnRO4joDMb\ne3BpGawhjs7oJEXNa0peRcEIpasiKdfb4G1MlLKh5QKBgQDmPWRXUedEV9iPbQtt\niyvy/x24uetsG3MZt5y3oMBOcbYD+txOTEQ8ERa49XAmmgK5vN7tuwizxpjAJ17y\nmUxbijRjebj7oCookO7Oac4ZoqZ9G7jKhBKmTgZRnSo0nCXG5ZMirfr+szRYAdQf\nWN7NpzwyLfTn3FXkT4i1XbGlbQKBgQDSazXuLswZZjWL3Rotuzvv8pVNoBHiwFe0\n4/iwH6vXgLYlMIX70mJ0meBRgIvr/3U4n09AmgrldHuvuypAPFE8p/JP8VKSjjsI\n2LGHFrvD+/q4VDE0+OBz9IaNF2N9ySUKPXThRI80Oc4dfRF3DiOqgFPeI2lWvaA/\npUF/RzCwawKBgC3JXbADyLMNqTJ0pAYn3BiZ5WY8CvZXyx79JbxayoOPF3xZIgCs\nKBGt8E/d92ylyg734XlzbXqa7vufmMEz/TxjEqIJreDUbC3fDK6d2e+9KdDNd4VG\nmJLcB2OplqAZwWV5eDY4VSbbqngp/O4y9TP+ovjzrLWDWs1ph61RsadNAoGAG1Ha\nLbObwkx39VHevUNLE+teITcAO32XpZ/XwR5LlG5ct9Vl//0f1V3JNyvGfvyq/pAI\nnS2i7onCKV3WrYJnVcXEe0as3uRim9JuskhsVpTXx6j+vo71rXh5I8Z+n21HRt4V\n182r/i7nKQL9CoUmclO5D+VvHtj9/mV5bIoUs0MCgYAt4fFGKR3kPUrQpJGXQCBD\nYJYzDfkPriOpePrOvhJXq7NI3F5TKKqP/qTTEIynDOlS26lOZYdczJWo5sfus+oX\nw6BM3AOlkdvY+1XRZch6Np2JBLVYJAPdrg3elw7rhYhWQQIhHTkRrAhmme6P1txE\ngIVrmsvVYkuZPrN+n5cGUA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "local-rhamss@voltaic-reducer-399714.iam.gserviceaccount.com",
+  "client_id": "114119958918665023871",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/local-rhamss%40voltaic-reducer-399714.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -8,6 +8,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from google.cloud import bigquery
+import google.auth.transport.requests
+import google.oauth2.credentials
+import pandas_gbq
+from google.oauth2 import service_account
+
 
 list_brand = ["wardah", "make-over", "emina", "kahf"]
 
@@ -71,20 +77,21 @@ def run_scraping(brand):
     
     driver = webdriver.Chrome()
     driver.get(url_order)
-    time.sleep(1)
+    time.sleep(5)
     soup = BeautifulSoup(driver.page_source, "html.parser")
     
     open_all_page(driver, soup)
     all_data_items = get_data_scrap(column_format, driver)
     
-    column_name = ["product_key", "brand", "caetgory", "sub_category"] + list(column_format.keys()) + ["url", "img_url"]
+    column_name = ["product_key", "brand", "category", "sub_category"] + list(column_format.keys()) + ["url", "img_url"]
     product = pd.DataFrame(all_data_items, columns=column_name)
+    
+    product.to_csv("product_items.csv", mode="a", index=False)
     
     return product
 
-product_pd = run_scraping("emina")
-
-
+# for brand in ["emina", "wardah", "make-over", "kahf"]:
+product_pd = run_scraping("kahf")
 
 
 
