@@ -35,9 +35,7 @@ def get_data_product_scrap(soup, card_attr):
                 text = "yes" if element else "No"
                 
             elif key_attr == 'rating_star':
-                text = 0
-                for star in element.find_all('i', class_='icon-ic_big_star_full'):
-                    text += 1
+                text = len(element.find_all('i', class_='icon-ic_big_star_full'))
             
             elif key_attr == "review_date":
                 date_info = element.text
@@ -93,6 +91,7 @@ def scraping_product_run(product_url):
     
     column_name = list(card_attr.keys())[:-1] + ["usage_period", "purchase_point"]
     product_reviews = pd.DataFrame(all_reviews_list, columns=column_name)
+    product_reviews.to_csv("product_reviews.csv", index=False)
     
     return product_reviews
 

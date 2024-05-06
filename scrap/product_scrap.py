@@ -65,7 +65,7 @@ def get_data_scrap(column_format, driver):
     
     return items
     
-def run_scraping(brand):
+def run_scraping(brand, i):
     column_format = {
         'product_name'      : ['p', 'jsx-1897565266 fd-body-md-regular text-ellipsis two-line word-break'],
         'product_shade'     : ['p', 'jsx-1897565266 fd-body-md-regular text-ellipsis grey']
@@ -86,13 +86,12 @@ def run_scraping(brand):
     column_name = ["product_key", "brand", "category", "sub_category"] + list(column_format.keys()) + ["url", "img_url"]
     product = pd.DataFrame(all_data_items, columns=column_name)
     
-    product.to_csv("product_items.csv", mode="a", index=False)
+    product.to_csv("product_items.csv", mode="a", index=False, header=False if i > 0 else True)
     
     return product
 
-# for brand in ["emina", "wardah", "make-over", "kahf"]:
-product_pd = run_scraping("kahf")
-
+for i, brand in enumerate(["emina", "wardah", "make-over", "kahf"]):
+    product_pd = run_scraping(brand, i)
 
 
 
